@@ -4,9 +4,10 @@ import React from "react";
 import { ButtonsCard } from "./ui/tailwindcss-buttons";
 import Image from "next/image";
 import { navbarLinks } from "@/constants/navlinks";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
+  const router = useRouter();
   const pathname = usePathname();
   return (
     <header className="bg-blue-800">
@@ -16,10 +17,16 @@ const Header = () => {
         </span>
 
         <div className="flex space-x-3">
-          <ButtonsCard className="rounded-md p-2 text-xs font-semibold text-blue-600 hover:bg-neutral-100">
+          <ButtonsCard
+            onClick={() => router.push(`/register`)}
+            className="rounded-md p-2 text-xs font-semibold text-blue-600 hover:bg-neutral-100"
+          >
             Register
           </ButtonsCard>
-          <ButtonsCard className="rounded-md p-2 text-xs font-semibold text-blue-600 hover:bg-neutral-100">
+          <ButtonsCard
+            onClick={() => router.push(`/sign-in`)}
+            className="rounded-md p-2 text-xs font-semibold text-blue-600 hover:bg-neutral-100"
+          >
             Sign In
           </ButtonsCard>
         </div>
