@@ -9,8 +9,11 @@ import {
   IconBrandFacebook,
 } from "@tabler/icons-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import * as apiClient from "@/api-client";
+import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export interface RegistrationFormInput {
   firstName: string;
@@ -21,18 +24,32 @@ export interface RegistrationFormInput {
 }
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const { isError } = useQuery("validateToken", apiClient.validateToken, {
+    retry: false,
+  });
+
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<RegistrationFormInput>();
   const mutation = useMutation(apiClient.userRegitrationFromApiCall, {
     onSuccess: () => {
-      console.log("Registration onSuccess");
+      reset();
+      toast({
+        title: "User registered successfully",
+      });
+      router.push(`/`);
     },
     onError: (error: Error) => {
-      console.log(error);
+      toast({
+        title: error.message,
+        variant: "destructive",
+      });
     },
   });
   const onSubmit: SubmitHandler<RegistrationFormInput> = (data) => {
@@ -158,6 +175,12 @@ const RegisterPage = () => {
             Sign up &rarr;
             <BottomGradient />
           </button>
+
+          <div className="pt-4">
+            <Link href={"/sign-in"}>
+              <p className="text-sm">Already registered?</p>
+            </Link>
+          </div>
 
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
