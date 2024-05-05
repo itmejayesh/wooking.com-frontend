@@ -1,6 +1,7 @@
 import axios from "axios";
 import { RegistrationFormInput } from "./app/(auth)/register/page";
 import { SignInFormInput } from "./app/(auth)/sign-in/page";
+import { PropertyFromData } from "./components/PropertyForm";
 
 export const userSignInFormApiCall = async (formData: SignInFormInput) => {
   try {
@@ -99,5 +100,22 @@ export const singOut = async () => {
   if (response.status !== 200) {
     throw new Error("Error during sign out"); // Handle non-200 responses
   }
+  return response;
+};
+
+export const addProperty = async (formData: PropertyFromData) => {
+  const response = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/propertylisting`,
+    formData,
+    {
+      withCredentials: true,
+      method: "POST",
+    },
+  );
+
+  if (response.status !== 201) {
+    throw new Error("Error during property listing");
+  }
+
   return response;
 };

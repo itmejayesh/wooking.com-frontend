@@ -37,6 +37,7 @@ const RegisterPage = () => {
     reset,
     formState: { errors },
   } = useForm<RegistrationFormInput>();
+
   const mutation = useMutation(apiClient.userRegitrationFromApiCall, {
     onSuccess: () => {
       reset();
@@ -52,13 +53,14 @@ const RegisterPage = () => {
       });
     },
   });
+
   const onSubmit: SubmitHandler<RegistrationFormInput> = (data) => {
     mutation.mutate(data);
   };
 
   return (
-    <section className="flex h-[calc(100vh-80px)] items-center justify-center">
-      <div className="mx-auto max-w-md rounded-none bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
+    <section className="flex items-center justify-center md:h-[calc(100vh-80px)]">
+      <div className="max-w-xs rounded-none bg-white p-4 shadow-input dark:bg-black md:max-w-lg md:rounded-2xl md:p-8">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
           Sign in or create an account
         </h2>
@@ -184,7 +186,7 @@ const RegisterPage = () => {
 
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-          <div className="flex justify-between gap-5">
+          <div className="grid grid-cols-2 justify-between gap-5 md:grid-cols-3 ">
             <button
               className=" group/btn relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
               type="submit"
@@ -215,6 +217,24 @@ const RegisterPage = () => {
               </span>
               <BottomGradient />
             </button>
+          </div>
+          <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+
+          <div>
+            <p className="text-center text-xs">
+              By signing in or creating an account, you agree with our{" "}
+              <span className="cursor-pointer text-blue-500 hover:underline">
+                Terms & conditions
+              </span>{" "}
+              and{" "}
+              <span className="cursor-pointer text-blue-500 hover:underline">
+                Privacy statement
+              </span>
+            </p>
+            <p className="pt-2 text-center text-xs">
+              All rights reserved. <br />
+              Copyright (2006 - 2024) - Wooking.com
+            </p>
           </div>
         </form>
       </div>

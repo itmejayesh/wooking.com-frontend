@@ -24,7 +24,7 @@ const SignIn = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
-  
+
   const mutation = useMutation(apiClient.userSignInFormApiCall, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("validateToken");
@@ -51,8 +51,8 @@ const SignIn = () => {
     mutation.mutate(data);
   };
   return (
-    <section className="flex h-[calc(100vh-80px)] items-center justify-center">
-      <div className="mx-auto max-w-md rounded-none bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
+    <section className="flex items-center justify-center md:h-[calc(100vh-80px)]">
+      <div className="max-w-xs rounded-none bg-white p-4 shadow-input dark:bg-black md:max-w-md md:rounded-2xl md:p-8">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
           Login your account
         </h2>
@@ -122,7 +122,7 @@ const SignIn = () => {
 
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-          <div className="flex justify-between gap-5">
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
             <button
               className=" group/btn relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
               type="submit"
