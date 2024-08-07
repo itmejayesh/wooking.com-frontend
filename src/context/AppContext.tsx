@@ -10,7 +10,7 @@ type AppContextValue = {
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
+  const { isError, data } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
   });
   return (

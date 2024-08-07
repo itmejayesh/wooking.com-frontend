@@ -14,11 +14,7 @@ import * as apiClient from "@/api-client";
 import Link from "next/link";
 import { toast, useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-
-export interface SignInFormInput {
-  email: string;
-  password: string;
-}
+import { SignInFormInput } from "@/constants/types";
 
 const SignIn = () => {
   const queryClient = useQueryClient();

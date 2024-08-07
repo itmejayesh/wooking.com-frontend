@@ -7,21 +7,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import * as apiClient from "@/api-client";
 import { useToast } from "./ui/use-toast";
-
-export interface PropertyFromData {
-  name: string;
-  city: string;
-  location: string;
-  country: string;
-  description: string;
-  type: string;
-  pricePerNights: number;
-  starRating: number;
-  facilities: string[];
-  imageFiles: FileList;
-  adultsCount: number;
-  childCount: number;
-}
+import { PropertyFormData } from "@/constants/types";
+import { useAppContext } from "@/context/AppContext";
 
 //configs
 const PropertyTags = [
@@ -55,6 +42,7 @@ const PropertyFeatures = [
 
 export function PropertyForm() {
   const { toast } = useToast();
+  const { isLoggedIn } = useAppContext();
 
   const {
     register,
@@ -62,15 +50,15 @@ export function PropertyForm() {
     watch,
     reset,
     formState: { errors },
-  } = useForm<PropertyFromData>();
+  } = useForm<PropertyFormData>();
 
   const tagWatch = watch("type");
 
-  const mutation = useMutation(apiClient.addProperty, {
+  const mutation = useMutation((formData: FormData) => apiClient.addProperty(formData), {
     onSuccess: () => {
       reset();
       toast({
-        title: "User registered successfully",
+        title: "Property listed successfully",
       });
     },
     onError: (error: Error) => {
@@ -81,10 +69,31 @@ export function PropertyForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<PropertyFromData> = (data) => {
-    console.log(data);
-    mutation.mutate(data);
+  const onSubmit: SubmitHandler<PropertyFormData> = (data) => {
+    if (isLoggedIn) {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('location', data.location);
+      formData.append('city', data.city);
+      formData.append('country', data.country);
+      formData.append('description', data.description);
+      formData.append('pricePerNights', data.pricePerNights.toString());
+      formData.append('starRating', data.starRating.toString());
+      formData.append('type', data.type);
+      formData.append('adultsCount', data.adultsCount.toString());
+      formData.append('childCount', data.childCount.toString());
+      data.facilities.forEach((facility, index) => formData.append(`facilities[${index}]`, facility));
+      Array.from(data.imageFiles).forEach((imageFile) => formData.append('imageFiles', imageFile));
+  
+      mutation.mutate(formData);
+    } else {
+      toast({
+        title: "Please Login",
+        variant: "destructive",
+      });
+    }
   };
+  
 
   return (
     <section className="m-5 mx-auto h-full max-w-xs rounded-none bg-white p-4 shadow-input dark:bg-black md:max-w-2xl md:rounded-2xl md:p-8">
@@ -244,7 +253,7 @@ export function PropertyForm() {
           <Label>Types</Label>
           <div className="mb mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
             {PropertyTags.map((type, index) => (
-              <LabelInputContainer className="mb-4">
+              <LabelInputContainer className="mb-4" key={index}>
                 <Label
                   htmlFor={`type-${index}`}
                   className={`flex cursor-pointer items-center justify-center gap-x-1 text-wrap rounded-lg bg-slate-500/20 p-3 ${tagWatch === type ? "bg-blue-500" : ""}`}
@@ -274,7 +283,7 @@ export function PropertyForm() {
           <Label>Facilities</Label>
           <div className="mt-2 grid grid-cols-2 gap-x-1 md:grid-cols-4">
             {PropertyFeatures.map((fac, index) => (
-              <LabelInputContainer className="mb-4">
+              <LabelInputContainer className="mb-4" key={index}>
                 <Label
                   htmlFor={`fac-${index}`}
                   className={`flex cursor-pointer items-center justify-start gap-x-1 pl-1`}

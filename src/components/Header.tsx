@@ -18,7 +18,7 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { isLoggedIn } = useAppContext();
-  const mutation = useMutation("logout", apiClient.singOut, {
+  const mutation = useMutation("logout", apiClient.signOut, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("validateToken");
       toast({
@@ -43,7 +43,7 @@ const Header = () => {
     <header className="bg-blue-800">
       <div className="mx-auto flex items-center justify-between p-4 py-6 md:container">
         <span className="text-2xl font-bold text-white">
-          <Link href={`/`}>Wooking.com </Link>
+          <Link href={`/`} >Properties.com </Link>
         </span>
 
         {/* Desktop Navigation */}
@@ -97,7 +97,7 @@ const Header = () => {
         >
           {/* Mobile Logo */}
           <h1 className="m-4 w-full pt-3 text-xl font-bold text-white">
-            Wooking.com
+          Properties.com
           </h1>
 
           {/* Mobile Navigation Items */}

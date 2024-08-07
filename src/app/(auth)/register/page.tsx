@@ -14,16 +14,12 @@ import * as apiClient from "@/api-client";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { RegistrationFormInput } from "@/constants/types";
 
-export interface RegistrationFormInput {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+
 
 const RegisterPage = () => {
+  //to do bug fix weak password handle
   const router = useRouter();
   const { toast } = useToast();
   const { isError } = useQuery("validateToken", apiClient.validateToken, {
@@ -38,7 +34,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<RegistrationFormInput>();
 
-  const mutation = useMutation(apiClient.userRegitrationFromApiCall, {
+  const mutation = useMutation(apiClient.userRegistrationFormApiCall, {
     onSuccess: () => {
       reset();
       toast({
@@ -133,7 +129,7 @@ const RegisterPage = () => {
               {...register("password", {
                 required: "password is required",
                 minLength: {
-                  value: 6,
+                  value: 8,
                   message:
                     "Please enter a password with a minimum length of 6 characters",
                 },

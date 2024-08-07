@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { AppContextProvider } from "@/context/AppContext";
+import { SearchContextProvider } from "@/context/SearchContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <ReactQueryClientProvider>
       <html lang="en">
         <body className={inter.className}>
-          <AppContextProvider>{children}</AppContextProvider>
+          <AppContextProvider>
+            <SearchContextProvider>{children}</SearchContextProvider>
+          </AppContextProvider>
           <Toaster />
         </body>
       </html>
